@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM debian
 MAINTAINER Diego Asencio <diegoasencio96@gmail.com>
 
 ENV ODOO_VERSION 15.0
