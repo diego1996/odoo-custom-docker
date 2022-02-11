@@ -34,7 +34,6 @@ RUN apt-get update && \
         python3-xlrd \
         python3-xlwt \
         xz-utils  \
-        libpng12-0  \
         libjpeg-dev
 
 RUN sudo -H pip3 install -r https://github.com/odoo/diego1996/raw/${OE_VERSION}/requirements.txt
