@@ -33,9 +33,9 @@ RUN apt-get update && \
         python3-watchdog \
         python3-xlrd \
         python3-xlwt \
-        xz-utils
-
-RUN sudo apt install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 libjpeg-dev gdebi -y
+        xz-utils  \
+        libpng12-0  \
+        libjpeg-dev
 
 RUN sudo -H pip3 install -r https://github.com/odoo/diego1996/raw/${OE_VERSION}/requirements.txt
 
