@@ -9,8 +9,6 @@ ENV OE_CONFIG="${OE_USER}-server"
 
 ENV OE_SUPERADMIN odoo
 
-RUN apt update -y && apt upgrade -y
-
 # Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -35,11 +33,16 @@ RUN apt-get update && \
         python3-watchdog \
         python3-xlrd \
         python3-xlwt \
-        xz-utils \
-    && curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
+        xz-utils
+
+RUN sudo apt-get install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 libjpeg-dev gdebi -y
+
+RUN sudo -H pip3 install -r https://github.com/odoo/diego1996/raw/${OE_VERSION}/requirements.txt
+
+RUN curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
     && echo 'ea8277df4297afc507c61122f3c349af142f31e5 wkhtmltox.deb' | sha1sum -c - \
-    && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
-    && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
+RUN apt-get install -y --no-install-recommends ./wkhtmltox.deb
+RUN rm -rf /var/lib/apt/lists/* wkhtmltox.deb
 
 RUN sudo apt-get install nodejs npm -y
 RUN sudo npm install -g rtlcss
