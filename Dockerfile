@@ -62,39 +62,39 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main' > /et
     && rm -f /etc/apt/sources.list.d/pgdg.list \
     && rm -rf /var/lib/apt/lists/*
 
-RUN sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'ODOO' --group $OE_USER
+RUN adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'ODOO' --group $OE_USER
 #The user should also be added to the sudo'ers group.
-RUN sudo adduser $OE_USER sudo
+RUN adduser $OE_USER sudo
 
-RUN sudo mkdir /var/log/$OE_USER
-RUN sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
+RUN mkdir /var/log/$OE_USER
+RUN chown $OE_USER:$OE_USER /var/log/$OE_USER
 
 # ==== Installing ODOO Server ====
-RUN sudo git clone --depth 1 --branch ${ODOO_VERSION} https://www.github.com/diego1996/odoo $OE_HOME_EXT/
+RUN git clone --depth 1 --branch ${ODOO_VERSION} https://www.github.com/diego1996/odoo $OE_HOME_EXT/
 
-RUN sudo su $OE_USER -c "mkdir $OE_HOME/custom"
-RUN sudo su $OE_USER -c "mkdir $OE_HOME/custom/addons"
+RUN su $OE_USER -c "mkdir $OE_HOME/custom"
+RUN su $OE_USER -c "mkdir $OE_HOME/custom/addons"
 
-RUN sudo chown -R $OE_USER:$OE_USER $OE_HOME/*
+RUN chown -R $OE_USER:$OE_USER $OE_HOME/*
 
-RUN sudo touch /etc/${OE_CONFIG}.conf
-RUN sudo su root -c "printf '[options] \n; This is the password that allows database operations:\n' >> /etc/${OE_CONFIG}.conf"
-RUN sudo su root -c "printf 'admin_passwd = ${OE_SUPERADMIN}\n' >> /etc/${OE_CONFIG}.conf"
-RUN sudo su root -c "printf 'http_port = ${OE_PORT}\n' >> /etc/${OE_CONFIG}.conf"
-RUN sudo su root -c "printf 'logfile = /var/log/${OE_USER}/${OE_CONFIG}.log\n' >> /etc/${OE_CONFIG}.conf"
-RUN sudo su root -c "printf 'addons_path=${OE_HOME_EXT}/addons,${OE_HOME}/custom/addons\n' >> /etc/${OE_CONFIG}.conf"
+RUN touch /etc/${OE_CONFIG}.conf
+RUN su root -c "printf '[options] \n; This is the password that allows database operations:\n' >> /etc/${OE_CONFIG}.conf"
+RUN su root -c "printf 'admin_passwd = ${OE_SUPERADMIN}\n' >> /etc/${OE_CONFIG}.conf"
+RUN su root -c "printf 'http_port = ${OE_PORT}\n' >> /etc/${OE_CONFIG}.conf"
+RUN su root -c "printf 'logfile = /var/log/${OE_USER}/${OE_CONFIG}.log\n' >> /etc/${OE_CONFIG}.conf"
+RUN su root -c "printf 'addons_path=${OE_HOME_EXT}/addons,${OE_HOME}/custom/addons\n' >> /etc/${OE_CONFIG}.conf"
 
-RUN sudo chown $OE_USER:$OE_USER /etc/${OE_CONFIG}.conf
-RUN sudo chmod 640 /etc/${OE_CONFIG}.conf
+RUN chown $OE_USER:$OE_USER /etc/${OE_CONFIG}.conf
+RUN chmod 640 /etc/${OE_CONFIG}.conf
 
 ADD deamon-odoo.sh .
 RUN chmod +x deamon-odoo.sh && ./deamon-odoo.sh
 
-RUN sudo mv ~/$OE_CONFIG /etc/init.d/$OE_CONFIG
-RUN sudo chmod 755 /etc/init.d/$OE_CONFIG
-RUN sudo chown root: /etc/init.d/$OE_CONFIG
+RUN mv ~/$OE_CONFIG /etc/init.d/$OE_CONFIG
+RUN chmod 755 /etc/init.d/$OE_CONFIG
+RUN chown root: /etc/init.d/$OE_CONFIG
 
-RUN sudo update-rc.d $OE_CONFIG defaults
+RUN update-rc.d $OE_CONFIG defaults
 
 EXPOSE 8069 8071 8072
 
