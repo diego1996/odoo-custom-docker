@@ -48,7 +48,7 @@ RUN rm -rf /var/lib/apt/lists/* wkhtmltox.deb
 RUN apt-get install nodejs npm -y
 RUN npm install -g rtlcss
 
-RUN apt install git -y
+RUN apt install git
 
 # install latest postgresql-client
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
