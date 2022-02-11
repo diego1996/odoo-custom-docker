@@ -106,7 +106,7 @@ COPY wait-for-psql.py /usr/local/bin/wait-for-psql.py
 USER odoo
 
 COPY entrypoint.sh /entrypoint.sh
-
+RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["odoo"]
 
