@@ -36,7 +36,8 @@ RUN apt-get update && \
         xz-utils  \
         libjpeg-dev
 
-RUN apt-get install python-psycopg2
+RUN apt-get install python3-psycopg2
+RUN apt install python3-dev libpq-dev
 RUN pip3 install -r https://github.com/diego1996/odoo/raw/${ODOO_VERSION}/requirements.txt
 
 RUN curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
